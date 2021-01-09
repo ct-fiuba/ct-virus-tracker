@@ -60,11 +60,10 @@ describe('App test', () => {
         await request(server).post('/infected').send({ visits: [visit1, visit2] }).then(res => {
           expect(res.status).toBe(201);
 
-          //TODO: check if visits have detectedTimestamp
           Visit.find({}).then((visits) => {
-            console.log(visits)
-          })
-        });
+            visits.forEach((visit) => expect(visit.detectedTimestamp).toBeTruthy())
+          }) 
+        })
       });
 
       test('should return 400 when visit not found', async () => {
