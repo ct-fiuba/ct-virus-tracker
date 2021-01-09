@@ -1,0 +1,14 @@
+FROM node:12.4.0
+
+WORKDIR /app 
+
+COPY package.json .
+
+RUN npm install
+
+COPY main.js .
+COPY src/ src/
+
+EXPOSE 5005
+
+ENTRYPOINT [ "npm", "start" ]
