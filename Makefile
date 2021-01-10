@@ -15,7 +15,7 @@ test:
 
 .PHONY: ping
 ping:
-	curl -vvv "localhost:5005/ping"
+	curl -vvv "localhost:5007/ping"
 
 .PHONY: help
 help:

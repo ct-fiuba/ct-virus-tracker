@@ -7,9 +7,9 @@ services:
       dockerfile: Dockerfile.web
     image: ct-visit-manager:latest
     environment:
-      - PORT=5005
+      - PORT=5007
     ports:
-      - "5005:5005"
+      - "5007:5007"
     depends_on:
       - contact-tracing-db
 

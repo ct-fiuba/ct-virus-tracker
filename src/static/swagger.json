@@ -33,7 +33,7 @@
                       "type": "object",
                       "allOf": [
                         {
-                          "$ref": "#/components/schemas/Visit"
+                          "$ref": "#/components/schemas/VisitId"
                         }
                       ]
                     }
@@ -50,7 +50,7 @@
           "400": {
             "description": "Missing fields"
           },
-          "409": {
+          "404": {
             "description": "Visit not found"
           }
         }
@@ -59,19 +59,12 @@
   },
   "components": {
     "schemas": {
-      "Visit": {
+      "VisitId": {
         "type": "object",
         "properties": {
           "userGeneratedCode": {
             "type": "string",
             "example": "aCodeGenerated"
-          },
-          "scanCode": {
-            "type": "string",
-            "example": "aScanCode"
-          },
-          "timestamp": {
-            "type": "string"
           }
         }
       }

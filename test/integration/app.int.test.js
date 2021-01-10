@@ -9,28 +9,19 @@ mongoose.connect(mongoURL);
 let server;
 
 let visit1 = {
-  scanCode: new mongoose.Types.ObjectId(),
-  isExitScan: false,
   userGeneratedCode: '1',
-  timestamp: Date.now(),
 }
 
 let visit2 = {
-  scanCode: new mongoose.Types.ObjectId(),
-  isExitScan: false,
   userGeneratedCode: '2',
-  timestamp: Date.now(),
 }
 
 let visistNotSaved = {
-  scanCode: new mongoose.Types.ObjectId(),
-  isExitScan: false,
   userGeneratedCode: 'notFound',
-  timestamp: Date.now(),
 }
 
 beforeAll(async () => {
-  server = await app.listen(5005);
+  server = await app.listen(5007);
 });
 
 afterAll(async (done) => {

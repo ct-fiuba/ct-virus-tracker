@@ -9,6 +9,6 @@ RUN npm install
 COPY main.js .
 COPY src/ src/
 
-EXPOSE 5005
+EXPOSE 5007
 
 ENTRYPOINT [ "npm", "start" ]
