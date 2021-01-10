@@ -1,8 +1,10 @@
 const { body , validationResult } = require('express-validator');
 
 module.exports = function bodyValidatorMiddleware() {
-  const detectValidations = [ //wip
-    body(['visits']).not().isEmpty()
+  const detectValidations = [
+    body(['visits'], "Missing visits").not().isEmpty(),
+    body(['visits'], "Visits must be an array").isArray(),
+    body(['visits.*.userGeneratedCode'], "Visit must have userGeneratedCode").not().isEmpty(),
   ];
 
   const validate = (req, res, next) => {
