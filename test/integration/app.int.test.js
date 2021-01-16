@@ -16,7 +16,7 @@ let visit2 = {
   userGeneratedCode: '2',
 }
 
-let visistNotSaved = {
+let visitNotSaved = {
   userGeneratedCode: 'notFound',
 }
 
@@ -58,7 +58,7 @@ describe('App test', () => {
       });
 
       test('should return 400 when visit not found', async () => {
-        await request(server).post('/infected').send({ visits: [visistNotSaved] }).then(res => {
+        await request(server).post('/infected').send({ visits: [visitNotSaved] }).then(res => {
           expect(res.status).toBe(404);
           expect(res.body.reason).toBe('1 visits not found')
         });
