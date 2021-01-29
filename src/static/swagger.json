@@ -1,0 +1,73 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Virus Tracker for Contact Tracing",
+    "version": "1.0.0",
+    "title": "Virus Tracker"
+  },
+  "tags": [
+    {
+      "name": "infected",
+      "description": "Detect infected"
+    }
+  ],
+  "paths": {
+    "/infected": {
+      "post": {
+        "tags": [
+          "infected"
+        ],
+        "summary": "Register new infected",
+        "operationId": "registerInfected",
+        "requestBody": {
+          "description": "Visits",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "visits": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/VisitId"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Infected registered successfully"
+          },
+          "400": {
+            "description": "Missing fields"
+          },
+          "404": {
+            "description": "Visit not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "VisitId": {
+        "type": "object",
+        "properties": {
+          "userGeneratedCode": {
+            "type": "string",
+            "example": "aCodeGenerated"
+          }
+        }
+      }
+    }
+  }
+}
