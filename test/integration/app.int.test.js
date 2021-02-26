@@ -123,5 +123,47 @@ describe('App test', () => {
         })
       });
     });
+
+    describe('get rules', () => {
+      let highRiskId;
+      let midRiskId;
+      
+      beforeEach(async () => {
+        await request(server).post('/rules').send({ rules: [ruleHighRisk, ruleMidRisk] }).then(res => {
+          const rules = res.body; 
+          highRiskId = rules.filter(rule => rule.index === 1)[0]._id;
+          midRiskId = rules.filter(rule => rule.index === 2)[0]._id;
+        });
+      })
+
+      test('should return all rules', async () => {
+        await request(server).get('/rules').then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body).toHaveLength(2);
+        });
+      });
+
+      test('should return high risk rule', async () => {
+        await request(server).get(`/rules/${highRiskId}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body._id).toBe(highRiskId);
+          expect(res.body.index).toBe(ruleHighRisk.index);
+          expect(res.body.contagionRisk).toBe(ruleHighRisk.contagionRisk);
+          expect(res.body.m2Value).toBe(ruleHighRisk.m2Value);
+          expect(res.body.m2Cmp).toBe(ruleHighRisk.m2Cmp);
+        });
+      });
+
+      test('should return mid risk rule', async () => {
+        await request(server).get(`/rules/${midRiskId}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body._id).toBe(midRiskId);
+          expect(res.body.index).toBe(ruleMidRisk.index);
+          expect(res.body.contagionRisk).toBe(ruleMidRisk.contagionRisk);
+          expect(res.body.m2Value).toBe(ruleMidRisk.m2Value);
+          expect(res.body.m2Cmp).toBe(ruleMidRisk.m2Cmp);
+        });
+      });
+    });
   });
 });

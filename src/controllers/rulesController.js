@@ -26,7 +26,6 @@ module.exports = function rulesController(ruleHandler) {
   const add = async (req, res, next) => {
     return ruleHandler.addRules(req.body.rules)
       .then(rules => {
-        console.log(rules);
         return res.status(201).json(rules)
       })
       .catch(err => errorDB(res, err));

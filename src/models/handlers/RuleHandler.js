@@ -13,7 +13,7 @@ module.exports = function SpaceHandler() {
     let promises = [];
     for (const rule of rules) {
       let newRule = new Rule(rule);
-      promises.push(newRule.save());
+      promises.push(await newRule.save());
     }
     return promises;
   };
@@ -21,7 +21,7 @@ module.exports = function SpaceHandler() {
   const deleteRules = async (ruleIds) => {
     let promises = [];
     for (const ruleId of ruleIds) {
-      promises.push(Rule.deleteOne({ _id: ruleId }));
+      promises.push(await Rule.deleteOne({ _id: ruleId }));
     }
     return promises;
   };
@@ -29,7 +29,7 @@ module.exports = function SpaceHandler() {
   const updateRules = async (rules) => {
     let promises = [];
     for (const rule of rules) {
-      promises.push(Rule.updateOne({ _id: rule._id }, rule))
+      promises.push(await Rule.updateOne({ _id: rule._id }, rule))
     }
     return promises;
   };
