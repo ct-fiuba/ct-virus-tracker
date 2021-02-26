@@ -8,7 +8,6 @@ module.exports = function rulesController(ruleHandler) {
   const get = async (req, res, next) => {
     return ruleHandler.findRules()
       .then(rules => {
-        console.log(rules);
         return res.status(200).json(rules);
       })
       .catch(err => errorDB(res, err));
@@ -34,7 +33,6 @@ module.exports = function rulesController(ruleHandler) {
   const remove = async (req, res, next) => {
     return ruleHandler.deleteRules(req.body.ruleIds)
       .then(info => {
-        console.log(info);
         return res.status(204).json(info);
       })
       .catch(err => errorDB(res, err));
@@ -43,7 +41,6 @@ module.exports = function rulesController(ruleHandler) {
   const update = async (req, res, next) => {
     return ruleHandler.updateRules(req.body.rules)
     .then(info => {
-      console.log(info);
       return res.status(200).json(info);
     })
     .catch(err => errorDB(res, err));

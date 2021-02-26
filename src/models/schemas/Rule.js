@@ -4,7 +4,6 @@ let ruleSchema = mongoose.Schema({
   index: {
     type: Number,
     required: true,
-    unique: true
   },
   contagionRisk: {
     type: String,

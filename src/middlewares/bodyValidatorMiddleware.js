@@ -10,6 +10,9 @@ module.exports = function bodyValidatorMiddleware() {
   const addRulesValidations = [
     body(['rules'], "Missing rules").not().isEmpty(),
     body(['rules'], "Rules must be an array").isArray(),
+    body(['rules.*.index'], "Rule must have index").not().isEmpty(),
+    body(['rules.*.contagionRisk'], "Rule must have contagionRisk").not().isEmpty(),
+    
   ];
 
   const deleteRulesValidations = [
@@ -20,6 +23,9 @@ module.exports = function bodyValidatorMiddleware() {
   const updateRulesValidations = [
     body(['rules'], "Missing rules").not().isEmpty(),
     body(['rules'], "Rules must be an array").isArray(),
+    body(['rules.*._id'], "Rule must have _id").not().isEmpty(),
+    body(['rules.*.index'], "Rule must have index").not().isEmpty(),
+    body(['rules.*.contagionRisk'], "Rule must have contagionRisk").not().isEmpty(),
   ];
 
 
