@@ -7,6 +7,22 @@ module.exports = function bodyValidatorMiddleware() {
     body(['visits.*.userGeneratedCode'], "Visit must have userGeneratedCode").not().isEmpty(),
   ];
 
+  const addRulesValidations = [
+    body(['rules'], "Missing rules").not().isEmpty(),
+    body(['rules'], "Rules must be an array").isArray(),
+  ];
+
+  const deleteRulesValidations = [
+    body(['ruleIds'], "Missing ruleIds").not().isEmpty(),
+    body(['ruleIds'], "ruleIds must be an array").isArray(),
+  ];
+
+  const updateRulesValidations = [
+    body(['rules'], "Missing rules").not().isEmpty(),
+    body(['rules'], "Rules must be an array").isArray(),
+  ];
+
+
   const validate = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -19,6 +35,9 @@ module.exports = function bodyValidatorMiddleware() {
 
   return {
     detectValidations,
+    addRulesValidations,
+    deleteRulesValidations,
+    updateRulesValidations,
     validate
   };
 };

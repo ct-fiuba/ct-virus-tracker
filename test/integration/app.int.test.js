@@ -1,5 +1,6 @@
 const app = require('../../src/app')();
 const Visit = require('../../src/models/schemas/Visit');
+const Rule = require('../../src/models/schemas/Rule');
 
 const request = require('supertest');
 const mongoose = require('mongoose');
@@ -18,6 +19,20 @@ let visit2 = {
 
 let visitNotSaved = {
   userGeneratedCode: 'notFound',
+}
+
+let ruleHighRisk = {
+  "index": 1,
+  "contagionRisk": "Alto",
+  "m2Value": 10,
+  "m2Cmp": "<"
+}
+
+let ruleMidRisk = {
+  "index": 2,
+  "contagionRisk": "Medio",
+  "m2Value": 10,
+  "m2Cmp": ">"
 }
 
 beforeAll(async () => {
@@ -62,6 +77,50 @@ describe('App test', () => {
           expect(res.status).toBe(404);
           expect(res.body.reason).toBe('1 visits not found')
         });
+      });
+    });
+  });
+
+  describe('rules', () => {
+
+    afterEach(async () => {
+      await Rule.deleteMany()
+    })
+
+    describe('add rule', () => {
+      test('add single rule should return 201', async () => {
+        await request(server).post('/rules').send({ rules: [ruleHighRisk] }).then(res => {
+          expect(res.status).toBe(201);
+          Rule.find({}).then((rules) => {
+            expect(rules.length).toBe(1);
+            expect(rules[0].index).toBe(ruleHighRisk.index);
+            expect(rules[0].contagionRisk).toBe(ruleHighRisk.contagionRisk);
+            expect(rules[0].m2Value).toBe(ruleHighRisk.m2Value);
+            expect(rules[0].m2Cmp).toBe(ruleHighRisk.m2Cmp);
+          }) 
+        })
+      });
+
+      test('add two rules should return 201', async () => {
+        await request(server).post('/rules').send({ rules: [ruleHighRisk, ruleMidRisk] }).then(res => {
+          expect(res.status).toBe(201);
+          Rule.find({}).then((rules) => {
+            expect(rules.length).toBe(2);
+            
+            highRisk = rules.filter(rule => rule.index === 1)[0];
+            midRisk = rules.filter(rule => rule.index === 2)[0];
+
+            expect(highRisk.index).toBe(ruleHighRisk.index);
+            expect(highRisk.contagionRisk).toBe(ruleHighRisk.contagionRisk);
+            expect(highRisk.m2Value).toBe(ruleHighRisk.m2Value);
+            expect(highRisk.m2Cmp).toBe(ruleHighRisk.m2Cmp);
+
+            expect(midRisk.index).toBe(ruleMidRisk.index);
+            expect(midRisk.contagionRisk).toBe(ruleMidRisk.contagionRisk);
+            expect(midRisk.m2Value).toBe(ruleMidRisk.m2Value);
+            expect(midRisk.m2Cmp).toBe(ruleMidRisk.m2Cmp);
+          }) 
+        })
       });
     });
   });
