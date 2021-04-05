@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./static/swagger.json');
 const infectedRouter = require('./routes/infectedRouter');
+const rulesRouter = require('./routes/rulesRouter');
 const monitoringRouter = require('./routes/monitoringRouter');
 
 module.exports = function app() {
@@ -12,6 +13,7 @@ module.exports = function app() {
   app.disable('x-powered-by');
   app.use(bodyParser.json());
   app.use(infectedRouter());
+  app.use(rulesRouter());
   app.use(monitoringRouter());
   app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

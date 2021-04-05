@@ -5,13 +5,16 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.web
-    image: ct-visit-manager:latest
+    image: ct-virus-tracker:latest
+    env_file:
+      - .env
     environment:
       - PORT=5007
+      - MONGODB_URI=mongodb://ct-virus-tracker-db:27017/ct-virus-tracker-db
     ports:
-      - "5007:5007"
+      - "${PORT}:${PORT}"
     depends_on:
-      - contact-tracing-db
+      - ct-virus-tracker-db
 
-  contact-tracing-db:
+  ct-virus-tracker-db:
     image: mongo:3.6.4
