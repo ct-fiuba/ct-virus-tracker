@@ -28,6 +28,26 @@ let ruleSchema = mongoose.Schema({
   spaceValue: {
     type: String,
     required: false
+  },
+  n95Mandatory: {
+    type: Boolean,
+    required: false
+  },
+  vaccinated: {
+    type: Number,
+    required: false
+  },
+  vaccinatedDate: {
+    type: Date,
+    required: false
+  },
+  covidRecovered: {
+    type: Boolean,
+    required: false
+  },
+  covidRecoveredDate: {
+    type: Date,
+    required: false
   }
 });
 

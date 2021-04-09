@@ -9,6 +9,22 @@ let visitSchema = mongoose.Schema({
   detectedTimestamp: {
     type: Date,
     required: false
+  },
+  vaccinated: {
+    type: Number,
+    required: true
+  },
+  vaccinatedDate: {
+    type: Date,
+    required: false
+  },
+  covidRecovered: {
+    type: Boolean,
+    required: true
+  },
+  covidRecoveredDate: {
+    type: Date,
+    required: false
   }
 });
 
