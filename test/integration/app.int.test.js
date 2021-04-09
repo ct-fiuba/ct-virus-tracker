@@ -11,10 +11,14 @@ let server;
 
 let visit1 = {
   userGeneratedCode: '1',
+  vaccinated: 0,
+  covidRecovered: false,
 }
 
 let visit2 = {
   userGeneratedCode: '2',
+  vaccinated: 0,
+  covidRecovered: false,
 }
 
 let visitNotSaved = {
