@@ -14,6 +14,10 @@ let visitSchema = mongoose.Schema({
     type: Number,
     required: true
   },
+  vaccineReceived: {
+    type: String,
+    required: false
+  },
   vaccinatedDate: {
     type: Date,
     required: false

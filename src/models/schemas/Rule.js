@@ -41,6 +41,10 @@ let ruleSchema = mongoose.Schema({
     type: Date,
     required: false
   },
+  vaccineReceived: {
+    type: String,
+    required: false
+  },
   covidRecovered: {
     type: Boolean,
     required: false
