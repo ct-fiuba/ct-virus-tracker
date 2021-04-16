@@ -37,7 +37,7 @@ let ruleSchema = mongoose.Schema({
     type: Number,
     required: false
   },
-  vaccinatedDate: {
+  vaccinatedDaysAgoMin: {
     type: Date,
     required: false
   },
