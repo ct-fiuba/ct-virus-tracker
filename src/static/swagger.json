@@ -299,9 +299,9 @@
             "type": "boolean",
             "example": "true"
           },
-          "covidRecoveredDate": {
-            "type": "boolean",
-            "example": "true"
+          "covidRecoveredDaysAgoMax": {
+            "type": "integer",
+            "example": "60"
           }
         }
       },
