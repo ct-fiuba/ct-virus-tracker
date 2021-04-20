@@ -12,6 +12,7 @@ let visitSchema = mongoose.Schema({
   },
   vaccinated: {
     type: Number,
+    default: 0,
     required: true
   },
   vaccineReceived: {
@@ -24,6 +25,7 @@ let visitSchema = mongoose.Schema({
   },
   covidRecovered: {
     type: Boolean,
+    default: false,
     required: true
   },
   covidRecoveredDate: {
