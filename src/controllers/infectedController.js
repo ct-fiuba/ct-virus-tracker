@@ -7,11 +7,11 @@ module.exports = function infectedController(visitHandler) {
 
 
   const add = async (req, res, next) => {
-    visits = req.body.visits;
+    code = req.body.userGeneratedCode;
     try {
-      let count = await visitHandler.detectVisits(visits);
-      if (count.n !== visits.length) {
-        return res.status(404).json({ reason: `${visits.length - count.n} visits not found` });
+      let count = await visitHandler.detectVisit(code);
+      if (count.n !== 1) {
+        return res.status(404).json({ reason: "Visit not found" });
       }
       return res.status(201).send()
     } catch(err) {
