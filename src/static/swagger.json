@@ -9,6 +9,10 @@
     {
       "name": "infected",
       "description": "Detect infected"
+    },
+    {
+      "name": "rules",
+      "description": "Contagion Rules" 
     }
   ],
   "paths": {
@@ -49,6 +53,194 @@
       }
     }
   },
+  "/rules": {
+    "post": {
+      "tags": [
+        "rules"
+      ],
+      "summary": "Create new rules",
+      "operationId": "addRules",
+      "requestBody": {
+        "description": "Created rule object",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Rule"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Rule created successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Missing fields / Invalid visibility"
+        }
+      }
+    },
+    "delete": {
+      "tags": [
+        "rules"
+      ],
+      "summary": "Delete rules",
+      "operationId": "deleteRules",
+      "requestBody": {
+        "description": "Created rule object",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ruleId"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "responses": {
+        "204": {
+          "description": "Rule deleted successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Missing fields / Invalid visibility"
+        }
+      }
+    },
+    "get": {
+      "tags": [
+        "rules"
+      ],
+      "summary": "Get all rules",
+      "description": "",
+      "operationId": "getRules",
+      "responses": {
+        "200": {
+          "description": "Rules registered in Virus Tracker",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Rule"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "put": {
+      "tags": [
+        "rules"
+      ],
+      "summary": "Edit Rules",
+      "description": "",
+      "operationId": "editRules",
+      "requestBody": {
+        "description": "Edit rules object",
+        "required": true,
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Rule"
+                }
+              ]
+            }
+          }
+        }
+      },
+      "responses": {
+        "200": {
+          "description": "Rules edited successfully",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Rule"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "400": {
+          "description": "Invalid fields / Invalid visibility"
+        }
+      }
+    }
+  },
+  "/rules/{ruleId}": {
+    "get": {
+      "tags": [
+        "rules"
+      ],
+      "summary": "Get rule by id",
+      "description": "",
+      "operationId": "getSingleRule",
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/ruleId"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "Rule registered in Virus Tracker",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Rule"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "404": {
+          "description": "Rule not found"
+        }
+      }
+    }
+  },
   "components": {
     "schemas": {
       "VisitId": {
@@ -59,6 +251,31 @@
             "example": "aCodeGenerated"
           }
         }
+      },
+      "Rule": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "number",
+            "example": 1
+          },
+          "contagionRisk": {
+            "type": "string",
+            "example": "Alto"
+          },
+          "m2Value": {
+            "type": "number",
+            "example": 100
+          },
+          "m2Cmp": {
+            "type": "string",
+            "example": ">"
+          }
+        }
+      },
+      "ruleId": {
+        "type": "string",
+        "example": "RuleId"
       }
     }
   }
