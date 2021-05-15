@@ -24,25 +24,17 @@
         "summary": "Register new infected",
         "operationId": "registerInfected",
         "requestBody": {
-          "description": "Visits",
+          "description": "Visit infected",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "properties": {
-                  "visits": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "allOf": [
-                        {
-                          "$ref": "#/components/schemas/VisitId"
-                        }
-                      ]
-                    }
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VisitId"
                   }
-                }
+                ]
               }
             }
           }

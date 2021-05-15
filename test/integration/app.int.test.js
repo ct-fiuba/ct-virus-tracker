@@ -63,19 +63,19 @@ describe('App test', () => {
 
     describe('add infected', () => {
       test('should return 201', async () => {
-        await request(server).post('/infected').send({ visits: [visit1, visit2] }).then(res => {
+        await request(server).post('/infected').send(visit1).then(res => {
           expect(res.status).toBe(201);
 
-          Visit.find({}).then((visits) => {
+          Visit.find({visit1}).then((visits) => {
             visits.forEach((visit) => expect(visit.detectedTimestamp).toBeTruthy())
           }) 
         })
       });
 
       test('should return 400 when visit not found', async () => {
-        await request(server).post('/infected').send({ visits: [visitNotSaved] }).then(res => {
+        await request(server).post('/infected').send(visitNotSaved).then(res => {
           expect(res.status).toBe(404);
-          expect(res.body.reason).toBe('1 visits not found')
+          expect(res.body.reason).toBe('Visit not found')
         });
       });
     });
