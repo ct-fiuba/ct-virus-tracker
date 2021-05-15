@@ -1,5 +1,6 @@
 require('dotenv').config();
 const app = require('./src/app');
+const queue = require('./src/connections/queue')();
 const mongoose = require('mongoose');
 
 const mongooseOptions = {

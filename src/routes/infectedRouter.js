@@ -2,7 +2,8 @@ const express = require('express');
 const bodyValidator = require('../middlewares/bodyValidatorMiddleware')();
 
 const visitHandler = require('../models/handlers/VisitHandler');
-const infectedController = require('../controllers/infectedController')(visitHandler());
+const codeHandler = require('../models/handlers/CodeHandler');
+const infectedController = require('../controllers/infectedController')(visitHandler(), codeHandler());
 
 module.exports = function infectedRouter() {
   return express.Router().use(

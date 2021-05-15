@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "amqp-connection-manager": "^3.2.2",
+    "amqplib": "^0.5.2",
     "body-parser": "^1.18.0",
     "cors": "latest",
     "dotenv": "^8.1.0",

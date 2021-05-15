@@ -1,4 +1,4 @@
-module.exports = function infectedController(visitHandler) {
+module.exports = function infectedController(visitHandler, codeHandler) {
 
   const errorDB = (res, err) => {
     console.log(err.message);
@@ -13,6 +13,8 @@ module.exports = function infectedController(visitHandler) {
       if (count.n !== 1) {
         return res.status(404).json({ reason: "Visit not found" });
       }
+      console.log("voy a mandar a la cola esto!", req.body)
+      await codeHandler.sendCode(req.body)
       return res.status(201).send()
     } catch(err) {
       errorDB(res, err);

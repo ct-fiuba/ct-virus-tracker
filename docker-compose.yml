@@ -12,7 +12,7 @@ services:
       - PORT=5007
       - MONGODB_URI=mongodb://ct-virus-tracker-db:27017/ct-virus-tracker-db
     ports:
-      - "${PORT}:${PORT}"
+      - "5007:5007"
     depends_on:
       - ct-virus-tracker-db
 
