@@ -10,7 +10,6 @@ module.exports = function bodyValidatorMiddleware() {
     body(['rules'], "Rules must be an array").isArray(),
     body(['rules.*.index'], "Rule must have index").not().isEmpty(),
     body(['rules.*.contagionRisk'], "Rule must have contagionRisk").not().isEmpty(),
-    
   ];
 
   const deleteRulesValidations = [

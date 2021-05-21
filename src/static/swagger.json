@@ -270,6 +270,30 @@
           "m2Cmp": {
             "type": "string",
             "example": ">"
+          },
+          "n95Mandatory": {
+            "type": "boolean",
+            "example": "false"
+          },
+          "vaccinated": {
+            "type": "integer",
+            "example": "1"
+          },
+          "vaccineReceived": {
+            "type": "string",
+            "example": "Pfizer"
+          },
+          "vaccinatedDaysAgoMin": {
+            "type": "integer",
+            "example": "60"
+          },
+          "covidRecovered": {
+            "type": "boolean",
+            "example": "true"
+          },
+          "covidRecoveredDaysAgoMax": {
+            "type": "integer",
+            "example": "60"
           }
         }
       },
