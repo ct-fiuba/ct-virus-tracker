@@ -10,8 +10,8 @@ run:
 
 .PHONY: test
 test:
-	docker run --rm -d -p 27017:27017 --name="$(TEST_CONTAINER_NAME)" mongo:3.6.4;
-	( npm run test:integration && docker stop $(TEST_CONTAINER_NAME)) || docker stop $(TEST_CONTAINER_NAME);
+	docker-compose up -d --force-recreate --remove-orphans -- ct-virus-tracker-db codes-queue;
+	( QUEUE_ADDRESS="amqp://guest:guest@localhost:5672/" QUEUE_NAME="infected-codes" npm run test:integration && docker-compose down ) || docker-compose down;
 
 .PHONY: ping
 ping:

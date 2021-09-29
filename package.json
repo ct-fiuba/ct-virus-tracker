@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "amqp-connection-manager": "^3.2.2",
+    "amqplib": "^0.5.2",
     "body-parser": "^1.18.0",
     "cors": "latest",
     "dotenv": "^8.1.0",
@@ -22,7 +24,6 @@
   },
   "devDependencies": {
     "jest": "^26.1.0",
-    "mongodb-memory-server": "^6.6.3",
     "prettier": "2.0.5",
     "supertest": "^4.0.2"
   },
