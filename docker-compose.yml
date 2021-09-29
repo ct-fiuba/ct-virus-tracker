@@ -6,8 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile.web
     image: ct-virus-tracker:latest
-    env_file:
-      - .env
     environment:
       - PORT=5007
       - MONGODB_URI=mongodb://ct-virus-tracker-db:27017/ct-virus-tracker-db

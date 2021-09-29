@@ -13,7 +13,6 @@ module.exports = function infectedController(visitHandler, codeHandler) {
       if (count.n !== 1) {
         return res.status(404).json({ reason: "Visit not found" });
       }
-      console.log("voy a mandar a la cola esto!", req.body)
       await codeHandler.sendCode(req.body)
       return res.status(201).send()
     } catch(err) {
