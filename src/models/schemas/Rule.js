@@ -25,8 +25,8 @@ let ruleSchema = mongoose.Schema({
     type: Number,
     required: false
   },
-  spaceValue: {
-    type: String,
+  openSpace: {
+    type: Boolean,
     required: false
   },
   n95Mandatory: {
