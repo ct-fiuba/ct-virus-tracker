@@ -45,11 +45,11 @@ let ruleSchema = mongoose.Schema({
     type: String,
     required: false
   },
-  covidRecovered: {
+  illnessRecovered: {
     type: Boolean,
     required: false
   },
-  covidRecoveredDaysAgoMax: {
+  illnessRecoveredDaysAgoMax: {
     type: Number,
     required: false
   }

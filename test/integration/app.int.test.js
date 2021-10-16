@@ -12,13 +12,13 @@ let server;
 let visit1 = {
   userGeneratedCode: '1',
   vaccinated: 0,
-  covidRecovered: false,
+  illnessRecovered: false,
 }
 
 let visit2 = {
   userGeneratedCode: '2',
   vaccinated: 0,
-  covidRecovered: false,
+  illnessRecovered: false,
 }
 
 let visitNotSaved = {
@@ -72,7 +72,7 @@ describe('App test', () => {
 
           Visit.find({visit1}).then((visits) => {
             visits.forEach((visit) => expect(visit.detectedTimestamp).toBeTruthy())
-          }) 
+          })
         })
       });
 
@@ -101,7 +101,7 @@ describe('App test', () => {
             expect(rules[0].contagionRisk).toBe(ruleHighRisk.contagionRisk);
             expect(rules[0].m2Value).toBe(ruleHighRisk.m2Value);
             expect(rules[0].m2Cmp).toBe(ruleHighRisk.m2Cmp);
-          }) 
+          })
         })
       });
 
@@ -110,7 +110,7 @@ describe('App test', () => {
           expect(res.status).toBe(201);
           Rule.find({}).then((rules) => {
             expect(rules.length).toBe(2);
-            
+
             highRisk = rules.filter(rule => rule.index === 1)[0];
             midRisk = rules.filter(rule => rule.index === 2)[0];
 
@@ -131,10 +131,10 @@ describe('App test', () => {
     describe('get rules', () => {
       let highRiskId;
       let midRiskId;
-      
+
       beforeEach(async () => {
         await request(server).post('/rules').send({ rules: [ruleHighRisk, ruleMidRisk] }).then(res => {
-          const rules = res.body; 
+          const rules = res.body;
           highRiskId = rules.filter(rule => rule.index === 1)[0]._id;
           midRiskId = rules.filter(rule => rule.index === 2)[0]._id;
         });
@@ -173,10 +173,10 @@ describe('App test', () => {
     describe('delete rules', () => {
       let highRiskId;
       let midRiskId;
-      
+
       beforeEach(async () => {
         await request(server).post('/rules').send({ rules: [ruleHighRisk, ruleMidRisk] }).then(res => {
-          const rules = res.body; 
+          const rules = res.body;
           highRiskId = rules.filter(rule => rule.index === 1)[0]._id;
           midRiskId = rules.filter(rule => rule.index === 2)[0]._id;
         });
@@ -191,7 +191,7 @@ describe('App test', () => {
             expect(rules[0].contagionRisk).toBe(ruleMidRisk.contagionRisk);
             expect(rules[0].m2Value).toBe(ruleMidRisk.m2Value);
             expect(rules[0].m2Cmp).toBe(ruleMidRisk.m2Cmp);
-          }) 
+          })
         });
       });
 
@@ -204,7 +204,7 @@ describe('App test', () => {
             expect(rules[0].contagionRisk).toBe(ruleHighRisk.contagionRisk);
             expect(rules[0].m2Value).toBe(ruleHighRisk.m2Value);
             expect(rules[0].m2Cmp).toBe(ruleHighRisk.m2Cmp);
-          }) 
+          })
         });
       });
 
@@ -213,7 +213,7 @@ describe('App test', () => {
           expect(res.status).toBe(204);
           Rule.find({}).then((rules) => {
             expect(rules.length).toBe(0);
-          }) 
+          })
         });
       });
     });
@@ -233,13 +233,13 @@ describe('App test', () => {
       test('should update the indexes', async () => {
         let aux = highRisk.index;
         highRisk.index = midRisk.index;
-        midRisk.index = aux; 
+        midRisk.index = aux;
 
         await request(server).put('/rules').send({ rules: [highRisk, midRisk] }).then(res => {
           expect(res.status).toBe(200);
           Rule.find({}).then((rules) => {
             expect(rules.length).toBe(2);
-            
+
             highRiskStored = rules.filter(rule => rule.index === 2)[0];
             midRiskStored = rules.filter(rule => rule.index === 1)[0];
 

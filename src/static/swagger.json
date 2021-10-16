@@ -12,7 +12,7 @@
     },
     {
       "name": "rules",
-      "description": "Contagion Rules" 
+      "description": "Contagion Rules"
     }
   ],
   "paths": {
@@ -287,11 +287,11 @@
             "type": "integer",
             "example": "60"
           },
-          "covidRecovered": {
+          "illnessRecovered": {
             "type": "boolean",
             "example": "true"
           },
-          "covidRecoveredDaysAgoMax": {
+          "illnessRecoveredDaysAgoMax": {
             "type": "integer",
             "example": "60"
           }
