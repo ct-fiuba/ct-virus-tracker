@@ -27,14 +27,14 @@ let visitNotSaved = {
 
 let ruleHighRisk = {
   "index": 1,
-  "contagionRisk": "Alto",
+  "contagionRisk": 0,
   "m2Value": 10,
   "m2Cmp": "<"
 }
 
 let ruleMidRisk = {
   "index": 2,
-  "contagionRisk": "Medio",
+  "contagionRisk": 1,
   "m2Value": 10,
   "m2Cmp": ">"
 }

@@ -260,8 +260,8 @@
             "example": 1
           },
           "contagionRisk": {
-            "type": "string",
-            "example": "Alto"
+            "type": "number",
+            "example": 0
           },
           "m2Value": {
             "type": "number",

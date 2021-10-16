@@ -6,7 +6,7 @@ let ruleSchema = mongoose.Schema({
     required: true,
   },
   contagionRisk: {
-    type: String,
+    type: Number,
     required: true
   },
   durationCmp: {
