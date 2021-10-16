@@ -13,6 +13,7 @@ module.exports = function infectedController(visitHandler, codeHandler) {
       if (count.n !== 1) {
         return res.status(404).json({ reason: "Visit not found" });
       }
+      req.body['spaceId'] = req.body['scanCode']
       await codeHandler.sendCode(req.body)
       return res.status(201).send()
     } catch(err) {
