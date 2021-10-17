@@ -10,7 +10,7 @@ run:
 
 .PHONY: test
 test:
-	docker-compose up -d --remove-orphans -- codes-queue ct-virus-tracker-db
+	docker-compose up -d --remove-orphans codes-queue ct-virus-tracker-db
 	( sleep 10 && MONGODB_URI="mongodb://localhost:27017/ct-virus-tracker-db" QUEUE_ADDRESS="amqp://guest:guest@localhost:5672/" QUEUE_NAME="infected-codes" npm run test:integration && docker-compose down ) || docker-compose down;
 
 .PHONY: ping
