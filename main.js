@@ -23,9 +23,27 @@ const connectDBWithRetry = (retries) => {
   })
 };
 
+const connectToRabbitMQ = () => {
+  const queueAddress = process.env.QUEUE_ADDRESS;
+  const queueName = process.env.QUEUE_NAME;
+
+  const connection = amqp.connect([queueAddress]);
+
+  const channel = connection.createChannel({
+    json: true,
+    setup: function(channel) {
+        // `channel` here is a regular amqplib `ConfirmChannel`.
+        // Note that `this` here is the channelWrapper instance.
+        return channel.assertQueue(queueName, {durable: true});
+    }
+  });
+  return {connection, channel, queueName};
+}
+
 const main = () => {
   connectDBWithRetry(1);
-  app().listen(app_port, () => {
+  rabbitManager = connectToRabbitMQ();
+  app(rabbitManager).listen(app_port, () => {
     console.log(`Visit Manager server up in port ${app_port}!`);
   });
 };

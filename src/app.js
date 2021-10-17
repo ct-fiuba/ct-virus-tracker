@@ -7,12 +7,12 @@ const infectedRouter = require('./routes/infectedRouter');
 const rulesRouter = require('./routes/rulesRouter');
 const monitoringRouter = require('./routes/monitoringRouter');
 
-module.exports = function app() {
+module.exports = function app(rabbitManager) {
   const app = express();
   app.use(cors());
   app.disable('x-powered-by');
   app.use(bodyParser.json());
-  app.use(infectedRouter());
+  app.use(infectedRouter(rabbitManager));
   app.use(rulesRouter());
   app.use(monitoringRouter());
   app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));

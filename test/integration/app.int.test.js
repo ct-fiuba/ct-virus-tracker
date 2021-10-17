@@ -1,6 +1,7 @@
-const app = require('../../src/app')();
+const appFactory = require('../../src/app');
 const Visit = require('../../src/models/schemas/Visit');
 const Rule = require('../../src/models/schemas/Rule');
+const amqp = require('amqp-connection-manager');
 
 const request = require('supertest');
 const mongoose = require('mongoose');
@@ -39,13 +40,33 @@ let ruleMidRisk = {
   "m2Cmp": ">"
 }
 
+const connectToRabbitMQ = () => {
+  const queueAddress = process.env.QUEUE_ADDRESS;
+  const queueName = process.env.QUEUE_NAME;
+
+  const connection = amqp.connect([queueAddress]);
+
+  const channel = connection.createChannel({
+    json: true,
+    setup: function(channel) {
+        // `channel` here is a regular amqplib `ConfirmChannel`.
+        // Note that `this` here is the channelWrapper instance.
+        return channel.assertQueue(queueName, {durable: true});
+    }
+  });
+  return {connection, channel, queueName};
+}
+
 beforeAll(async () => {
-  server = await app.listen(5007);
+  rabbitManager = connectToRabbitMQ();
+  server = await appFactory(rabbitManager).listen(5007);
 });
 
 afterAll(async (done) => {
   await mongoose.connection.close();
-  await server.close(done);
+  await rabbitManager.connection.close();
+  await server.close();
+  done();
 });
 
 describe('App test', () => {
