@@ -1,6 +1,7 @@
-const app = require('../../src/app')();
+const appFactory = require('../../src/app');
 const Visit = require('../../src/models/schemas/Visit');
 const Rule = require('../../src/models/schemas/Rule');
+const amqp = require('amqp-connection-manager');
 
 const request = require('supertest');
 const mongoose = require('mongoose');
@@ -12,13 +13,13 @@ let server;
 let visit1 = {
   userGeneratedCode: '1',
   vaccinated: 0,
-  covidRecovered: false,
+  illnessRecovered: false,
 }
 
 let visit2 = {
   userGeneratedCode: '2',
   vaccinated: 0,
-  covidRecovered: false,
+  illnessRecovered: false,
 }
 
 let visitNotSaved = {
@@ -27,25 +28,45 @@ let visitNotSaved = {
 
 let ruleHighRisk = {
   "index": 1,
-  "contagionRisk": "Alto",
+  "contagionRisk": 0,
   "m2Value": 10,
   "m2Cmp": "<"
 }
 
 let ruleMidRisk = {
   "index": 2,
-  "contagionRisk": "Medio",
+  "contagionRisk": 1,
   "m2Value": 10,
   "m2Cmp": ">"
 }
 
+const connectToRabbitMQ = () => {
+  const queueAddress = process.env.QUEUE_ADDRESS;
+  const queueName = process.env.QUEUE_NAME;
+
+  const connection = amqp.connect([queueAddress]);
+
+  const channel = connection.createChannel({
+    json: true,
+    setup: function(channel) {
+        // `channel` here is a regular amqplib `ConfirmChannel`.
+        // Note that `this` here is the channelWrapper instance.
+        return channel.assertQueue(queueName, {durable: true});
+    }
+  });
+  return {connection, channel, queueName};
+}
+
 beforeAll(async () => {
-  server = await app.listen(5007);
+  rabbitManager = connectToRabbitMQ();
+  server = await appFactory(rabbitManager).listen(5007);
 });
 
 afterAll(async (done) => {
   await mongoose.connection.close();
-  await server.close(done);
+  await rabbitManager.connection.close();
+  await server.close();
+  done();
 });
 
 describe('App test', () => {
@@ -72,7 +93,7 @@ describe('App test', () => {
 
           Visit.find({visit1}).then((visits) => {
             visits.forEach((visit) => expect(visit.detectedTimestamp).toBeTruthy())
-          }) 
+          })
         })
       });
 
@@ -101,7 +122,7 @@ describe('App test', () => {
             expect(rules[0].contagionRisk).toBe(ruleHighRisk.contagionRisk);
             expect(rules[0].m2Value).toBe(ruleHighRisk.m2Value);
             expect(rules[0].m2Cmp).toBe(ruleHighRisk.m2Cmp);
-          }) 
+          })
         })
       });
 
@@ -110,7 +131,7 @@ describe('App test', () => {
           expect(res.status).toBe(201);
           Rule.find({}).then((rules) => {
             expect(rules.length).toBe(2);
-            
+
             highRisk = rules.filter(rule => rule.index === 1)[0];
             midRisk = rules.filter(rule => rule.index === 2)[0];
 
@@ -131,10 +152,10 @@ describe('App test', () => {
     describe('get rules', () => {
       let highRiskId;
       let midRiskId;
-      
+
       beforeEach(async () => {
         await request(server).post('/rules').send({ rules: [ruleHighRisk, ruleMidRisk] }).then(res => {
-          const rules = res.body; 
+          const rules = res.body;
           highRiskId = rules.filter(rule => rule.index === 1)[0]._id;
           midRiskId = rules.filter(rule => rule.index === 2)[0]._id;
         });
@@ -173,10 +194,10 @@ describe('App test', () => {
     describe('delete rules', () => {
       let highRiskId;
       let midRiskId;
-      
+
       beforeEach(async () => {
         await request(server).post('/rules').send({ rules: [ruleHighRisk, ruleMidRisk] }).then(res => {
-          const rules = res.body; 
+          const rules = res.body;
           highRiskId = rules.filter(rule => rule.index === 1)[0]._id;
           midRiskId = rules.filter(rule => rule.index === 2)[0]._id;
         });
@@ -191,7 +212,7 @@ describe('App test', () => {
             expect(rules[0].contagionRisk).toBe(ruleMidRisk.contagionRisk);
             expect(rules[0].m2Value).toBe(ruleMidRisk.m2Value);
             expect(rules[0].m2Cmp).toBe(ruleMidRisk.m2Cmp);
-          }) 
+          })
         });
       });
 
@@ -204,7 +225,7 @@ describe('App test', () => {
             expect(rules[0].contagionRisk).toBe(ruleHighRisk.contagionRisk);
             expect(rules[0].m2Value).toBe(ruleHighRisk.m2Value);
             expect(rules[0].m2Cmp).toBe(ruleHighRisk.m2Cmp);
-          }) 
+          })
         });
       });
 
@@ -213,7 +234,7 @@ describe('App test', () => {
           expect(res.status).toBe(204);
           Rule.find({}).then((rules) => {
             expect(rules.length).toBe(0);
-          }) 
+          })
         });
       });
     });
@@ -233,13 +254,13 @@ describe('App test', () => {
       test('should update the indexes', async () => {
         let aux = highRisk.index;
         highRisk.index = midRisk.index;
-        midRisk.index = aux; 
+        midRisk.index = aux;
 
         await request(server).put('/rules').send({ rules: [highRisk, midRisk] }).then(res => {
           expect(res.status).toBe(200);
           Rule.find({}).then((rules) => {
             expect(rules.length).toBe(2);
-            
+
             highRiskStored = rules.filter(rule => rule.index === 2)[0];
             midRiskStored = rules.filter(rule => rule.index === 1)[0];
 

@@ -4,3 +4,4 @@
 .env
 
 rabbitmq/
+package-lock.json

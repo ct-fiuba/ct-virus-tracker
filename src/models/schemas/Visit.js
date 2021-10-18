@@ -23,12 +23,12 @@ let visitSchema = mongoose.Schema({
     type: Date,
     required: false
   },
-  covidRecovered: {
+  illnessRecovered: {
     type: Boolean,
     default: false,
     required: true
   },
-  covidRecoveredDate: {
+  illnessRecoveredDate: {
     type: Date,
     required: false
   }

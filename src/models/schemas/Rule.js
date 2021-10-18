@@ -6,7 +6,7 @@ let ruleSchema = mongoose.Schema({
     required: true,
   },
   contagionRisk: {
-    type: String,
+    type: Number,
     required: true
   },
   durationCmp: {
@@ -25,8 +25,8 @@ let ruleSchema = mongoose.Schema({
     type: Number,
     required: false
   },
-  spaceValue: {
-    type: String,
+  openSpace: {
+    type: Boolean,
     required: false
   },
   n95Mandatory: {
@@ -45,11 +45,11 @@ let ruleSchema = mongoose.Schema({
     type: String,
     required: false
   },
-  covidRecovered: {
+  illnessRecovered: {
     type: Boolean,
     required: false
   },
-  covidRecoveredDaysAgoMax: {
+  illnessRecoveredDaysAgoMax: {
     type: Number,
     required: false
   }

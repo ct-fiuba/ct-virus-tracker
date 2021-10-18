@@ -12,7 +12,7 @@
     },
     {
       "name": "rules",
-      "description": "Contagion Rules" 
+      "description": "Contagion Rules"
     }
   ],
   "paths": {
@@ -260,8 +260,8 @@
             "example": 1
           },
           "contagionRisk": {
-            "type": "string",
-            "example": "Alto"
+            "type": "number",
+            "example": 0
           },
           "m2Value": {
             "type": "number",
@@ -287,11 +287,11 @@
             "type": "integer",
             "example": "60"
           },
-          "covidRecovered": {
+          "illnessRecovered": {
             "type": "boolean",
             "example": "true"
           },
-          "covidRecoveredDaysAgoMax": {
+          "illnessRecoveredDaysAgoMax": {
             "type": "integer",
             "example": "60"
           }

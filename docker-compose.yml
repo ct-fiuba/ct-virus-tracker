@@ -15,9 +15,12 @@ services:
       - "5007:5007"
     depends_on:
       - ct-virus-tracker-db
+      - codes-queue
 
   ct-virus-tracker-db:
     image: mongo:3.6.4
+    ports:
+      - 27017:27017
 
   codes-queue:
     image: rabbitmq:3-management-alpine
@@ -25,11 +28,3 @@ services:
     ports:
         - 5672:5672
         - 15672:15672
-    volumes:
-        - ./rabbitmq/data/:/var/lib/rabbitmq/
-        - ./rabbitmq/log/:/var/log/rabbitmq
-    networks:
-        - queue-network
-
-networks:
-  queue-network:
