@@ -370,7 +370,7 @@ describe('App test', () => {
       test('should update vaccine', async () => {
         await request(server).put(`/vaccines/${vaccine_id}`).send(vaccine2).then(res => {
           expect(res.status).toBe(200);
-          Vaccine.find({ '_id': vaccine_id }).then((vaccine) => {
+          Vaccine.findOne({ _id: vaccine_id }).then((vaccine) => {
             expect(vaccine.name).toBe(vaccine2.name);
             expect(vaccine.shotsCount).toBe(vaccine2.shotsCount);
           })
