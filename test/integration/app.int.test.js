@@ -368,7 +368,7 @@ describe('App test', () => {
       })
 
       test('should update vaccine', async () => {
-        await request(server).delete(`/vaccines/${vaccine_id}`).send(vaccine2).then(res => {
+        await request(server).put(`/vaccines/${vaccine_id}`).send(vaccine2).then(res => {
           expect(res.status).toBe(200);
           Vaccine.find({ '_id': vaccine_id }).then((vaccine) => {
             expect(vaccine.name).toBe(vaccine2.name);
