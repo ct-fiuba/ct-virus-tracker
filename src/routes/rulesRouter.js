@@ -1,5 +1,5 @@
 const express = require('express');
-const bodyValidator = require('../middlewares/bodyValidatorMiddleware')();
+const bodyValidator = require('../middlewares/bodyRulesValidatorMiddleware')();
 
 const ruleHandler = require('../models/handlers/RuleHandler');
 const rulesController = require('../controllers/rulesController')(ruleHandler());

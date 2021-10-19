@@ -1,4 +1,5 @@
 const appFactory = require('../../src/app');
+const Vaccine = require('../../src/models/schemas/Vaccine');
 const Visit = require('../../src/models/schemas/Visit');
 const Rule = require('../../src/models/schemas/Rule');
 const amqp = require('amqp-connection-manager');
@@ -38,6 +39,16 @@ let ruleMidRisk = {
   "contagionRisk": 1,
   "m2Value": 10,
   "m2Cmp": ">"
+}
+
+let vaccine1 = {
+  "name": "Sinopharm",
+  "shotsCount": 3
+}
+
+let vaccine2 = {
+  "name": "Pfizer",
+  "shotsCount": 2
 }
 
 const connectToRabbitMQ = () => {
@@ -273,6 +284,95 @@ describe('App test', () => {
             expect(midRiskStored.contagionRisk).toBe(ruleMidRisk.contagionRisk);
             expect(midRiskStored.m2Value).toBe(ruleMidRisk.m2Value);
             expect(midRiskStored.m2Cmp).toBe(ruleMidRisk.m2Cmp);
+          })
+        });
+      });
+    });
+  });
+
+  describe('vaccines', () => {
+
+    afterEach(async () => {
+      await Vaccine.deleteMany()
+    })
+
+    describe('add vaccine', () => {
+      test('add vaccine should return 201', async () => {
+        await request(server).post('/vaccines').send(vaccine1).then(res => {
+          expect(res.status).toBe(201);
+          Vaccine.find({}).then((vaccines) => {
+            expect(vaccines.length).toBe(1);
+            expect(vaccines[0].name).toBe(vaccine1.name);
+            expect(vaccines[0].shotsCount).toBe(vaccine1.shotsCount);
+          })
+        })
+      });
+    });
+
+    describe('get vaccines', () => {
+      let vaccine1_id;
+      let vaccine2_id;
+      
+      beforeEach(async () => {
+        await request(server).post('/vaccines').send(vaccine1).then(res => {
+          vaccine1_id = res.body._id;
+        });
+        await request(server).post('/vaccines').send(vaccine2).then(res => {
+          vaccine2_id = res.body._id;
+        });
+      })
+
+      test('should return all vaccines', async () => {
+        await request(server).get('/vaccines').then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body).toHaveLength(2);
+        });
+      });
+
+      test('should return specific vaccine', async () => {
+        await request(server).get(`/vaccines/${vaccine1_id}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body._id).toBe(vaccine1_id);
+          expect(res.body.name).toBe(vaccine1.name);
+          expect(res.body.shotsCount).toBe(vaccine1.shotsCount);
+        });
+      });
+    });
+
+    describe('delete vaccine', () => {
+      let vaccine_id;
+      
+      beforeEach(async () => {
+        await request(server).post('/vaccines').send(vaccine1).then(res => {
+          vaccine_id = res.body._id;
+        });
+      })
+
+      test('should delete vaccine', async () => {
+        await request(server).delete(`/vaccines/${vaccine_id}`).send().then(res => {
+          expect(res.status).toBe(204);
+          Rule.find({}).then((rules) => {
+            expect(rules.length).toBe(0);
+          })
+        });
+      });
+    });
+
+    describe('update vaccine', () => {
+      let vaccine_id;
+      
+      beforeEach(async () => {
+        await request(server).post('/vaccines').send(vaccine1).then(res => {
+          vaccine_id = res.body._id;
+        });
+      })
+
+      test('should update vaccine', async () => {
+        await request(server).put(`/vaccines/${vaccine_id}`).send(vaccine2).then(res => {
+          expect(res.status).toBe(200);
+          Vaccine.findOne({ _id: vaccine_id }).then((vaccine) => {
+            expect(vaccine.name).toBe(vaccine2.name);
+            expect(vaccine.shotsCount).toBe(vaccine2.shotsCount);
           })
         });
       });
