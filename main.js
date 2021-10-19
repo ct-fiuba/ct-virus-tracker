@@ -1,5 +1,7 @@
 require('dotenv').config();
 const app = require('./src/app');
+
+const amqp = require('amqp-connection-manager');
 const mongoose = require('mongoose');
 
 const mongooseOptions = {

@@ -1,6 +1,6 @@
 const Rule = require('../schemas/Rule');
 
-module.exports = function SpaceHandler() {
+module.exports = function RuleHandler() {
   const findRule = async (ruleId) => {
     return Rule.findOne({ _id: ruleId });
   };
