@@ -312,7 +312,7 @@ describe('App test', () => {
     describe('get vaccines', () => {
       let vaccine1_id;
       let vaccine2_id;
-      
+
       beforeEach(async () => {
         await request(server).post('/vaccines').send(vaccine1).then(res => {
           vaccine1_id = res.body._id;
@@ -341,7 +341,7 @@ describe('App test', () => {
 
     describe('delete vaccine', () => {
       let vaccine_id;
-      
+
       beforeEach(async () => {
         await request(server).post('/vaccines').send(vaccine1).then(res => {
           vaccine_id = res.body._id;
@@ -349,7 +349,7 @@ describe('App test', () => {
       })
 
       test('should delete vaccine', async () => {
-        await request(server).delete(`/vaccines/${vaccine_id}`).send().then(res => {
+        await request(server).delete(`/vaccines`).send({vaccineId: vaccine_id}).then(res => {
           expect(res.status).toBe(204);
           Rule.find({}).then((rules) => {
             expect(rules.length).toBe(0);
@@ -360,7 +360,7 @@ describe('App test', () => {
 
     describe('update vaccine', () => {
       let vaccine_id;
-      
+
       beforeEach(async () => {
         await request(server).post('/vaccines').send(vaccine1).then(res => {
           vaccine_id = res.body._id;
@@ -368,7 +368,7 @@ describe('App test', () => {
       })
 
       test('should update vaccine', async () => {
-        await request(server).put(`/vaccines/${vaccine_id}`).send(vaccine2).then(res => {
+        await request(server).put(`/vaccines`).send({...vaccine2, vaccineId: vaccine_id}).then(res => {
           expect(res.status).toBe(200);
           Vaccine.findOne({ _id: vaccine_id }).then((vaccine) => {
             expect(vaccine.name).toBe(vaccine2.name);
