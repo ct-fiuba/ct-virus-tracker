@@ -11,7 +11,7 @@ module.exports = function rulesRouter() {
       .get('/:vaccineId', vaccinesController.getById)
       .get('/', vaccinesController.get)
       .post('/', bodyValidator.addValidations, bodyValidator.validate, vaccinesController.add)
-      .put('/:vaccineId', bodyValidator.updateValidations, bodyValidator.validate, vaccinesController.update)
-      .delete('/:vaccineId', vaccinesController.remove)      
+      .put('/', bodyValidator.updateValidations, bodyValidator.validate, vaccinesController.update)
+      .delete('/', vaccinesController.remove)
   );
 };

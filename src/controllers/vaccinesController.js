@@ -31,7 +31,7 @@ module.exports = function vaccinesController(vaccineHandler) {
   };
 
   const remove = async (req, res, next) => {
-    return vaccineHandler.deleteVaccine(req.params.vaccineId)
+    return vaccineHandler.deleteVaccine(req.body.vaccineId)
       .then(vaccine => {
         return res.status(204).json(vaccine);
       })
@@ -39,7 +39,7 @@ module.exports = function vaccinesController(vaccineHandler) {
   };
 
   const update = async (req, res, next) => {
-    return vaccineHandler.updateVaccine(req.params.vaccineId, req.body)
+    return vaccineHandler.updateVaccine(req.body.vaccineId, req.body)
     .then(vaccine => {
       return res.status(200).json(vaccine);
     })
